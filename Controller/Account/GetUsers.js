@@ -8,7 +8,7 @@ export const GetUsers = async (req, res) => {
   try {
     let Users = await User.find().select("-__v -createdAt -updatedAt").lean();
     const data = Users.map(({ _id, ...rest }) => {
-      return rest ;
+      return {userID: _id, ...rest} ;
     });
     return customJsonResponse(res, 200, true, data, "Users Found");
   } catch {
