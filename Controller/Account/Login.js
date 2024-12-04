@@ -1,10 +1,10 @@
-import { customJsonResponse, generateToken } from "../../Lib/helper.js";
+import { AccountNumberExists, customJsonResponse, generateAuthToken, generateToken } from "../../Lib/helper.js";
 import { User } from "../../Models/User.js";
 
 export const Login = async (req, res) => {
-  const { value, password } = req.body;
-  console.log(value);
-  if (!value.trim() || !password.trim())
+  let { accountNumber, password } = req.body;
+  accountNumber = accountNumber.toString()
+  if (!accountNumber.trim() || !password.trim())
     return customJsonResponse(
       res,
       400,
@@ -13,9 +13,7 @@ export const Login = async (req, res) => {
       "Please fill in all fields"
     );
 
-  const UserAccount = await User.findOne({
-    $or: [{ phone: value }, { email: value }],
-  });
+  const UserAccount = await AccountNumberExists(accountNumber)
 
   if (!UserAccount)
     return customJsonResponse(res, 400, false, null, "Invalid Credentials");
@@ -33,9 +31,22 @@ export const Login = async (req, res) => {
       "Sorry, Your account has been blocked, contact support to regain access"
     );
 
+    const data = {
+      email: UserAccount.email,
+      isAdmin: UserAccount.isAdmin,
+      firstName: UserAccount.firstName,
+      middleName: UserAccount.middleName,
+      lastName: UserAccount.lastName,
+      userID: UserAccount._id,
+      accountNumber: UserAccount.accountNumber,
+      accountBalance: UserAccount.availableBalance,
+    }
+
+    console.log(UserAccount)
+
   try {
-    const data = await generateToken(UserAccount.email, 15);
-    return customJsonResponse(res, 200, data.token, null, "Valid");
+    const token = await generateAuthToken({data})
+    return customJsonResponse(res, 200, true, data, "Login Successful");
   } catch (error) {
     return customJsonResponse(res, 400, true, null, "Something went wrong, Try again later");
   }

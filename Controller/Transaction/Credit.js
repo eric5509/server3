@@ -10,6 +10,7 @@ import { Transaction } from "../../Models/Transaction.js";
 
 export const Credit = async (req, res) => {
   let { amount, accountNumber, description, status, date } = req.body;
+  let transactionStatus = status || "pending";
   if (
     !trimValue(amount) ||
     !trimValue(date) ||
@@ -41,7 +42,7 @@ export const Credit = async (req, res) => {
     accountNumber,
     description,
     transactionType: "credit",
-    status: status ? status : "pending",
+    status: transactionStatus,
     accountHolder: await GetFullName(Account.email),
   };
   try {

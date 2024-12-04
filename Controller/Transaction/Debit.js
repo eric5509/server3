@@ -56,7 +56,7 @@ export const Debit = async (req, res) => {
   Account.availableBalance -= Number(amount);
 
   const data = {
-    userID: Account._id,
+    User: Account._id,
     amount,
     accountNumber,
     description,

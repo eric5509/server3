@@ -10,7 +10,8 @@ export const ApplyForLoan = async (req, res) => {
     const accountHolder  = `${Account.firstName} ${Account.middleName} ${Account.lastName}` 
     try {
         const newLoan = await Loan.create({...req.body, user: Account._id, accountHolder})
-        return customJsonResponse(res, 200, true,newLoan, 'New Loan Created' )
+        console.log(newLoan)
+        return customJsonResponse(res, 200, true, newLoan, 'New Loan Created' )
     } catch (error) {
         return customJsonResponse(res, 500, false,null, error.message )
     }

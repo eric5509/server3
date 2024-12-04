@@ -1,17 +1,25 @@
 import { customJsonResponse, AccountNumberExists } from "../../Lib/helper.js"
 import { User } from "../../Models/User.js"
 
+
 export const DeleteAccount = async (req, res) => {
-	const {id}  = req.params 
-	try{
-		const result = await User.deleteOne({ _id: id });
-		console.log(result.deletedCount)
-		if (result.deletedCount === 0) {
-			console.log("No user found with the given ID.");
-		} else {
-			console.log("User deleted successfully.");
-		}		return customJsonResponse(res, 200, true, null, 'User successfully deleted')
-	}catch(error){
-		return customJsonResponse(res, 500, false, null, 'Something went wrong, please try again later')
+	if (!req.params.id)
+	  return customJsonResponse(res, 400, false, null, "Please send a valid ID");
+	try {
+	  const user = await User.findById(req.params.id);
+	  if (!user) {
+		return customJsonResponse(res, 404, false, null, "User not found");
+	  }
+	  await User.findByIdAndDelete(req.params.id);
+	  return customJsonResponse(
+		res,
+		200,
+		true,
+		null,
+		"User Successfully Deleted"
+	  );
+	} catch (error) {
+	  return customJsonResponse(res, 500, false, null, error.message);
 	}
-}
+  };
+  

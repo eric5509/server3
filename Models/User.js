@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
     nationality: { type: String, required: true },
     active: { type: Boolean, required: true, default: false },
     verified: { type: Boolean, required: true, default: false },
+    admin: { type: Boolean, required: true, default: false },
     status: {
       type: String,
       enum: ["pending", "failed", "status"],

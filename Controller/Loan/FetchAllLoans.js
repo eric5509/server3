@@ -5,7 +5,7 @@ export const FetchAllLoans = async (req, res) => {
   const loans = await Loan.find().lean();
   const result = loans.map(({ _id, __v, createdAt, updatedAt, ...rest }) => {
     return {
-      loadID: _id,
+      loanID: _id,
       ...rest,
     };
   });

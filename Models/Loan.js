@@ -30,7 +30,7 @@ const LoanSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: "success" | "pending" | "failed",
+      enum: ["success","pending","failed"],
       required: true,
     },
   },

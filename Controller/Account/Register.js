@@ -47,6 +47,7 @@ export const Register = async (req, res) => {
   availableBalance = availableBalance ? Number(availableBalance) : 0;
   firstName = toLowerCaseTrimmed(firstName);
   middleName = toLowerCaseTrimmed(middleName);
+  accountType = toLowerCaseTrimmed(accountType)
   lastName = toLowerCaseTrimmed(lastName);
   dob = convertToDate(dob);
 
@@ -112,11 +113,7 @@ export const Register = async (req, res) => {
     transferPin,
     nationality,
     password,
-    image: isAdmin
-      ? "https://play-lh.googleusercontent.com/P0QkMWnVe00FSXsSc2OzkHKqGB9JTMm4sur4XRkBBkFEtO7MEQgoxO6s92LHnJcvdgc"
-      : gender === "male"
-      ? "https://i.pinimg.com/736x/41/e0/39/41e0398984b0f1a0c79acfb0694bfcce.jpg"
-      : "https://i.pinimg.com/736x/1b/14/f5/1b14f5d219943c538a3390d422b58219.jpg",
+    image: "",
   };
   try {
     const newAccount = await User.create(data);

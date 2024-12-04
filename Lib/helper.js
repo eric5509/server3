@@ -27,7 +27,7 @@ export const generateUniqueAccountNumber = async () => {
 
 export const GetAccountByID = async (id) => {
   const account = await User.findById(id);
-  return account || null;
+  return account;
 };
 export const GetTransactionByID = async (id) => {
   const transaction = await Transaction.findById(id);
@@ -217,6 +217,34 @@ export const generateToken = async (email, minutes) => {
     throw new Error    
   }
 };
+
+export const generateAuthToken = async ({email, userID, isAdmin, firstName, middleName, lastName, accountNumber, accountBalance}) => {
+  const payload = {
+    email,userID, isAdmin, firstName, middleName, lastName, accountBalance, accountNumber
+  }
+  console.log(    email,userID, isAdmin, firstName, middleName, lastName, accountBalance, accountNumber  )
+  if(email.trim() && userID.trim() && accountBalance.trim() && accountNumber.trim() && isAdmin !== undefined && firstName.trim() && lastName.trim()){
+    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "30d"})
+  }
+  return false
+};
+
+
+export const verifyToken = (token) => {
+  if (token) {
+    try {
+      const tokenData = jwt.verify(token, process.env.JWT_SECRET);
+      if (tokenData) {
+        return tokenData;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+  return false;
+};
+
 
 export const tokenExpired = (time) =>  {
   const currentTime = new Date(); 
