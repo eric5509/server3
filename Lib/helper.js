@@ -222,7 +222,7 @@ export const generateAuthToken = async ({email, userID, isAdmin, firstName, midd
   const payload = {
     email,userID, isAdmin, firstName, middleName, lastName, accountBalance, accountNumber
   }
-  if(email.trim() && userID.trim() && accountBalance.trim() && accountNumber.trim() && isAdmin !== undefined && firstName.trim() && lastName.trim()){
+  if(email && userID && accountBalance && accountNumber && isAdmin !== undefined && firstName && lastName){
     return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "30d"})
   }
   return false

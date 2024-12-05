@@ -15,7 +15,6 @@ export const Login = async (req, res) => {
 
   const UserAccount = await User.findOne({accountNumber})
 
-  console.log(UserAccount.password)
   if (!UserAccount)
     return customJsonResponse(res, 400, false, null, "Invalid Credentials");
 

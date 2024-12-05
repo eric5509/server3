@@ -17,7 +17,7 @@ export const VerifyAccountPin = async (req, res) => {
   try {
     const Account = await User.findOne({ accountNumber, authPin });
     if (!Account) {
-      return customJsonResponse(res, 400, false, null, "Account not found, please check your details.");
+      return customJsonResponse(res, 400, false, null, "Incorrect Authentication PIN");
     }
     const data = {
       email: Account.email,
@@ -37,6 +37,6 @@ export const VerifyAccountPin = async (req, res) => {
       return customJsonResponse(res, 500, false, null, 'Could not create token, please try again later');
     }
   } catch (error) {
-    return customJsonResponse(res, 500, false, null, 'An error occurred, please try again later');
+    return customJsonResponse(res, 500, false, null, error.message);
   }
 };
