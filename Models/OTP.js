@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const TokenSchema = mongoose.Schema({
+const OTPSchema = mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Please input an Email']
@@ -15,4 +15,4 @@ const TokenSchema = mongoose.Schema({
     },
 }, {timestamps: true})
 
-export const Token = mongoose.model('Token', TokenSchema)
+export const OTP = mongoose.model('OTP', OTPSchema)

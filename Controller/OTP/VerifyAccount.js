@@ -1,9 +1,9 @@
-import { customJsonResponse, tokenExpired } from "../../Lib/helper.js";
-import { Token } from "../../Models/Token.js";
+import { customJsonResponse, OTPExpired } from "../../Lib/helper.js";
+import { OTP } from "../../Models/OTP.js";
 
 export const VerifyAcount = async (req, res) => {
-  const { token, email } = req.body;
-  if (!token || !email)
+  const { otp, email } = req.body;
+  if (!otp || !email)
     return customJsonResponse(
       res,
       200,
@@ -11,15 +11,15 @@ export const VerifyAcount = async (req, res) => {
       null,
       "Please fill in all fields"
     );
-  const TOKEN = await Token.findOne({ email, token });
-  if (!TOKEN) return customJsonResponse(res, 400, false, null, "Invalid OTP");
-  const TokenExpired = tokenExpired(TOKEN.expiryDate);
+  const OTPData = await OTP.findOne({ email, token });
+  if (!OTPData) return customJsonResponse(res, 400, false, null, "Invalid OTP");
+  const expired = OTPExpired(OTPData.expiryDate);
   try {
-    if (TokenExpired) {
-      await Token.findByIdAndDelete(TOKEN._id);
+    if (expired) {
+      await OTP.findByIdAndDelete(OTPData._id);
       return customJsonResponse(res, 400, false, null, "OTP Expired");
     }
-    await Token.findByIdAndDelete(TOKEN._id);
+    await OTP.findByIdAndDelete(OTPData._id);
     return customJsonResponse(
       res,
       200,

@@ -1,4 +1,5 @@
 import { customJsonResponse, CreateOTP } from "../../Lib/helper.js";
+import { OTP } from "../../Models/OTP.js";
 import { User } from "../../Models/User.js";
 
 export const VerifyAccountPin = async (req, res) => {
@@ -25,15 +26,13 @@ export const VerifyAccountPin = async (req, res) => {
         "Incorrect Authentication PIN"
       );
     }
+    const userHasOTP = await OTP.findOne({email: Account.email})
+    if(userHasOTP){
+      await OTP.findByIdAndDelete(userHasOTP._id)
+    }
     const otp = await CreateOTP(Account.email, 15);
-    console.log(otp)
-
     if (otp) {
-      const data = {
-        otp,
-        firstName: Account.firstName
-      }
-      return customJsonResponse(res, 200, true, data, "Verification successful");
+      return customJsonResponse(res, 200, true, otp, "Verification successful");
     } else {
       return customJsonResponse(
         res,

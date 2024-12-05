@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import { Transaction } from "../Models/Transaction.js";
 import { KYC } from "../Models/KYC.js";
 import crypto from "crypto";
-import { Token } from "../Models/Token.js";
+import { OTP } from "../Models/OTP.js";
 
 export const generateUniqueAccountNumber = async () => {
   const allAccount = await User.find();
@@ -211,7 +211,7 @@ export const CreateOTP = async (email, minutes) => {
   const expiryDate = new Date(currentDate.getTime() + minutes * 60 * 1000);
   const otp = Math.floor(10000 + Math.random() * 90000)
   try {
-    await Token.create({otp, expiryDate, email})
+    await OTP.create({otp, expiryDate, email})
     return otp
   } catch (error) {
     throw new Error    
@@ -221,7 +221,6 @@ export const CreateOTP = async (email, minutes) => {
 export const generateAuthToken = async (payload) => {
   try {
     return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "30d"})
-    
   } catch (error) {
     return false
   }
@@ -244,7 +243,7 @@ export const verifyToken = (token) => {
 };
 
 
-export const tokenExpired = (time) =>  {
+export const OTPExpired = (time) =>  {
   const currentTime = new Date(); 
   return currentTime > time;
 }

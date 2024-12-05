@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { VerifyAcount } from "../Controller/Token/VerifyAccount.js";
-import { DecryptToken } from "../Controller/Token/DecryptToken.js";
+import { VerifyAcount } from "../Controller/OTP/VerifyAccount.js";
+import { DecryptToken } from "../Lib/DecryptToken.js";
 
 
 
