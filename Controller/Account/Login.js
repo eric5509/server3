@@ -1,4 +1,4 @@
-import { AccountNumberExists, customJsonResponse, generateAuthToken, generateToken } from "../../Lib/helper.js";
+import { AccountNumberExists, customJsonResponse, generateAuthToken } from "../../Lib/helper.js";
 import { User } from "../../Models/User.js";
 
 export const Login = async (req, res) => {
@@ -44,7 +44,8 @@ export const Login = async (req, res) => {
 
     const returnData = {
       fullName: `${UserAccount.firstName} ${UserAccount.lastName} ${UserAccount.middleName}`,
-      accountNumber: UserAccount.accountNumber
+      accountNumber: UserAccount.accountNumber,
+      email: UserAccount.email
     }
 
   try {

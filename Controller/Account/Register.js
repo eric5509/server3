@@ -6,7 +6,7 @@ import {
   convertToDate,
   customJsonResponse,
   toLowerCaseTrimmed,
-  generateToken,
+  CreateOTP,
 } from "../../Lib/helper.js";
 import { validate } from "../../Lib/validate.js";
 export const Register = async (req, res) => {
@@ -116,7 +116,7 @@ export const Register = async (req, res) => {
   };
   try {
     const newAccount = await User.create(data);
-    const tokenData = await generateToken(newAccount.email, 15);
+    const tokenData = await CreateOTP(newAccount.email, 15);
     if (newAccount && tokenData) {
       return customJsonResponse(
         res,

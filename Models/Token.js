@@ -5,7 +5,7 @@ const TokenSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please input an Email']
     },
-    token: {
+    otp: {
         type: String,
         required: [true, 'Please input a Token']
     },

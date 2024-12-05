@@ -206,26 +206,25 @@ export const passwordMatch = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
 
-export const generateToken = async (email, minutes) => {
+export const CreateOTP = async (email, minutes) => {
   const currentDate = new Date();
   const expiryDate = new Date(currentDate.getTime() + minutes * 60 * 1000);
-  const token = Math.floor(10000 + Math.random() * 90000)
+  const otp = Math.floor(10000 + Math.random() * 90000)
   try {
-    const data = await Token.create({token, expiryDate, email})
-    return data
+    await Token.create({otp, expiryDate, email})
+    return otp
   } catch (error) {
     throw new Error    
   }
 };
 
-export const generateAuthToken = async ({email, userID, isAdmin, firstName, middleName, lastName, accountNumber, accountBalance}) => {
-  const payload = {
-    email,userID, isAdmin, firstName, middleName, lastName, accountBalance, accountNumber
-  }
-  if(email && userID && accountBalance && accountNumber && isAdmin !== undefined && firstName && lastName){
+export const generateAuthToken = async (payload) => {
+  try {
     return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "30d"})
+    
+  } catch (error) {
+    return false
   }
-  return false
 };
 
 
