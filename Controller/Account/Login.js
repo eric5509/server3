@@ -13,8 +13,9 @@ export const Login = async (req, res) => {
       "Please fill in all fields"
     );
 
-  const UserAccount = await AccountNumberExists(accountNumber)
+  const UserAccount = await User.findOne({accountNumber})
 
+  console.log(UserAccount.password)
   if (!UserAccount)
     return customJsonResponse(res, 400, false, null, "Invalid Credentials");
 
@@ -42,11 +43,13 @@ export const Login = async (req, res) => {
       accountBalance: UserAccount.availableBalance,
     }
 
-    console.log(UserAccount)
+    const returnData = {
+      fullName: `${UserAccount.firstName} ${UserAccount.lastName} ${UserAccount.middleName}`,
+      accountNumber: UserAccount.accountNumber
+    }
 
   try {
-    const token = await generateAuthToken({data})
-    return customJsonResponse(res, 200, true, data, "Login Successful");
+    return customJsonResponse(res, 200, true, returnData, "Login Successful");
   } catch (error) {
     return customJsonResponse(res, 400, true, null, "Something went wrong, Try again later");
   }

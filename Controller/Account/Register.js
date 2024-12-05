@@ -9,7 +9,6 @@ import {
   generateToken,
 } from "../../Lib/helper.js";
 import { validate } from "../../Lib/validate.js";
-import { Token } from "../../Models/Token.js";
 export const Register = async (req, res) => {
   let {
     firstName,
