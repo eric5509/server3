@@ -14,7 +14,7 @@ import { FetchSingleUser } from "../Controller/Account/FetchSingleUser.js";
 export const userRoutes = Router();
 
 userRoutes.get("/users", GetUsers);
-userRoutes.get("/user/:value", FetchSingleUser);
+userRoutes.get("/user/:id", FetchSingleUser);
 userRoutes.post("/user/login", Login);
 userRoutes.post("/user/verify-pin", VerifyAccountPin);
 userRoutes.post("/user/verify-otp", VerifyOTP);
